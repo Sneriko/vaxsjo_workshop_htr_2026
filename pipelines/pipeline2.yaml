@@ -1,0 +1,27 @@
+# En pipeline för textsnuttar utan komplicerad layout
+
+steps:
+- step: Segmentation  # Segmentera raderna
+  settings:
+    model: yolo   # Modellarkitektur
+    model_settings:
+      model: Riksarkivet/yolov9-lines-within-regions-1  # Modellvikter (hämtas från HuggingFace)
+    generation_settings:
+      conf: 0.5
+- step: OrderLines  # Ordna raderna i läsordning (uppifrån och ner)
+- step: TextRecognition   # Transkribera raderna
+  settings:
+    model: trocr  # Modellarkitektur
+    model_settings:
+       model: Riksarkivet/trocr-base-handwritten-hist-swe-2 # Modellvikter
+- step: RemoveLowTextConfidenceLines  # Ta bort dåliga rader
+  settings:
+    threshold: 0.85
+- step: Export  # Exportera resultatet
+  settings:
+    dest: outputs
+    format: txt
+- step: Export  # Exportera resultatet
+  settings:
+    dest: outputs
+    format: json

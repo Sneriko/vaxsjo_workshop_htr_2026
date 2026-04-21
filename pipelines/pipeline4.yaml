@@ -1,0 +1,10 @@
+steps:
+- step: Inference
+  settings:
+    model: dit
+    model_settings:
+      model: microsoft/dit-base-finetuned-rvlcdip
+- step: Export
+  settings:
+    dest: outputs
+    format: json
